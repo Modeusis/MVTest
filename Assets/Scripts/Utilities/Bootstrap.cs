@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Models;
 using Setups;
 using UI;
 using UnityEngine;
@@ -10,12 +11,18 @@ namespace Utilities
 {
     public class Bootstrap
     {
+        private readonly GameObject _bootstrapMenu;
+        
         private readonly MvcControllerSetup _mvcControllerSetup;
         
         private readonly Dictionary<MvPatternType, BootstrapMenuButton> _buttons;
         
-        public Bootstrap(Dictionary<MvPatternType, BootstrapMenuButton> bootstrapButtons, MvcControllerSetup mvcControllerSetup)
+        private CubeControllerMVC _cubeControllerMvc;
+        
+        public Bootstrap(GameObject bootstrapMenu, Dictionary<MvPatternType, BootstrapMenuButton> bootstrapButtons, MvcControllerSetup mvcControllerSetup)
         {
+            _bootstrapMenu = bootstrapMenu;
+            
             _mvcControllerSetup = mvcControllerSetup;
             
             _buttons = bootstrapButtons;
@@ -53,51 +60,32 @@ namespace Utilities
             
             return OperationResult.Success();
         }
+
+        public void Show()
+        {
+            _bootstrapMenu.SetActive(true);
+        }
+
+        public void Hide()
+        {
+            _bootstrapMenu.SetActive(false);
+        }
         
         private void ShowMvcExample()
         {
-            Debug.Log("Show mvc example");
+            _cubeControllerMvc = new CubeControllerMVC(_mvcControllerSetup , this);
+            
+            Hide();
         }
         
         private void ShowMvpExample()
         {
-            Debug.Log("Show mvp example");
+            
         }
         
         private void ShowMvvmExample()
         {
-            Debug.Log("Show mvvm example");
-        }
-    }
-
-
-    public enum MvPatternType
-    {
-        Mvc,
-        Mvp,
-        Mvvm
-    }
-
-    public class OperationResult
-    {
-        public bool IsSuccess { get; private set; }
-        public string Message { get; private set; }
-
-        private OperationResult(bool isSuccess, string message = "Empty message")
-        {
-            IsSuccess = isSuccess;
-            Message = message;
-        }
-        
-        public static OperationResult Success()
-        {
-            return new OperationResult(true);
-        }
-
-        
-        public static OperationResult Failure(string errorMessage)
-        {
-            return new OperationResult(false, errorMessage);
+            
         }
     }
 }

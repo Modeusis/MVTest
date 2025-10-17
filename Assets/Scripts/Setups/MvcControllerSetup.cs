@@ -8,10 +8,8 @@ namespace Setups
     [Serializable]
     public class MvcControllerSetup
     {
-        [SerializeField, Space] private CubeModelMVC _cubeModel;
-        [SerializeField, Space] private Transform _cubeViewTransform;
+        [field: SerializeField, Space] public ControllerViewMVC ControllerViewMvc { get; private set; }
         
-        [SerializeField, Space] private UiButton _rotateCubeButton;
-        [SerializeField] private UiButton _stopRotatingButton;
+        [field: SerializeField, Space] public CubeModelMVC CubeModel { get; private set; }
     }
 }

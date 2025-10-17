@@ -11,6 +11,8 @@ namespace DI
 {
     public class BootstrapInstaller : MonoInstaller
     {
+        [SerializeField, Space] private GameObject _bootstrapMenu;
+        
         [SerializeField, Space] private MvcControllerSetup _mvcControllerSetup;
         
         [SerializeField, Space] private BootstrapMenuButton _mvcExampleButton;
@@ -26,7 +28,7 @@ namespace DI
                 { MvPatternType.Mvvm, _mvvmExampleButton },
             };
             
-            var cubeController = new Bootstrap(buttonsDictionary, _mvcControllerSetup);
+            var cubeController = new Bootstrap(_bootstrapMenu, buttonsDictionary, _mvcControllerSetup);
             
             Container.BindInterfacesAndSelfTo<Bootstrap>().FromInstance(cubeController);
         }

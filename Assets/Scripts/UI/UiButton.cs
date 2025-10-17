@@ -21,10 +21,16 @@ namespace UI
         {
             Button.onClick.AddListener(onClick);
         }
-
+        
         public void SetEnabled(bool enabled)
         {
             Button.interactable = enabled;
+        }
+
+        public void Clear()
+        {
+            TextField.text = "";
+            Button.onClick.RemoveAllListeners();
         }
     }
 }

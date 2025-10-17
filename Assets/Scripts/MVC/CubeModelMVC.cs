@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Models
@@ -8,12 +9,25 @@ namespace Models
     {
         public bool IsRotating { get; private set; }
         
-        [field: SerializeField, Range(1, 10)] public float RotationDuration { get; private set; }
+        [field: SerializeField, Space] public Transform CubeTransform { get; private set; }
+        
+        [field: SerializeField, Range(1, 10), Space] public float RotationDuration { get; private set; }
         [field: SerializeField] public Vector3 RotationValue { get; private set; }
 
-        public void StartRotating()
+        public Tween StartRotating(Action callback = null) 
         {
             IsRotating = true;
+            
+            var currentRotation = CubeTransform.eulerAngles;
+            var destination = currentRotation + RotationValue;
+
+            return CubeTransform.DORotate(destination, RotationDuration, RotateMode.FastBeyond360)
+                .OnComplete(() =>
+                {
+                    IsRotating = false;
+                    
+                    callback?.Invoke();
+                });
         }
 
         public void StopRotating()
