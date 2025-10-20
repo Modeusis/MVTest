@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using Models;
-using Setups;
 using UI;
 using UnityEngine;
-using UnityEngine.UI;
 using Utilities;
 using Zenject;
 

@@ -1,7 +1,5 @@
-using System;
 using Models;
 using UI;
-using UnityEngine;
 
 namespace Setups
 {

@@ -1,13 +1,8 @@
-using System;
 using System.Collections.Generic;
 using Models;
 using Setups;
 using UI;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
-using Zenject;
-using Object = UnityEngine.Object;
 
 namespace Utilities
 {

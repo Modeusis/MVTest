@@ -1,7 +1,5 @@
 using Base;
-using DG.Tweening;
 using Setups;
-using UI;
 using Utilities;
 
 namespace Models

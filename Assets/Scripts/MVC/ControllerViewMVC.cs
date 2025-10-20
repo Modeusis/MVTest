@@ -1,4 +1,3 @@
-using System;
 using UI;
 
 namespace Models

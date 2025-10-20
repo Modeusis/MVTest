@@ -10,7 +10,7 @@ namespace Models
     {
         private readonly CubeModelMVVM _cubeModel;
         
-        private CompositeDisposable _disposables;
+        private CompositeDisposable _disposables = new ();
         
         public CubeControllerMVVM(MvvmControllerSetup mvvmSetup, Bootstrap bootstrap)
         {
@@ -20,8 +20,6 @@ namespace Models
             
             ControllerView = mvvmSetup.ControllerView;
             ControllerView.UpdateButtons(false);
-            
-            _disposables = new CompositeDisposable();
         }
 
         private void SetupEventHandlers()

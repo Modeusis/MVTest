@@ -1,7 +1,6 @@
 using System;
 using Base;
 using DG.Tweening;
-using UnityEngine;
 
 namespace Models
 {
