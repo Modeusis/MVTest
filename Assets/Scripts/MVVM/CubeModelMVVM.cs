@@ -1,6 +1,10 @@
+using System;
+using Base;
+
 namespace Models
 {
-    public class CubeModelMVVM
+    [Serializable]
+    public class CubeModelMVVM : BaseCubeModel
     {
         
     }

@@ -6,26 +6,38 @@ using UI;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Zenject;
+using Object = UnityEngine.Object;
 
 namespace Utilities
 {
     public class Bootstrap
     {
-        private readonly GameObject _bootstrapMenu;
+        private readonly ResourceLoader _resourceLoader;
         
-        private readonly MvcControllerSetup _mvcControllerSetup;
+        private readonly BootstrapMenu _bootstrapMenu;
+        
+        private readonly Transform _uiContainer;
         
         private readonly Dictionary<MvPatternType, BootstrapMenuButton> _buttons;
         
+        private readonly CubeModelMVC _cubeModelMvc;
+        private readonly CubeModelMVVM _cubeModelMvp;
+        private readonly CubeModelMVP _cubeModelMvvm;
+        
+        private ControllerView _controllerView;
+        
         private CubeControllerMVC _cubeControllerMvc;
         
-        public Bootstrap(GameObject bootstrapMenu, Dictionary<MvPatternType, BootstrapMenuButton> bootstrapButtons, MvcControllerSetup mvcControllerSetup)
+        public Bootstrap(Transform uiContainer, BootstrapMenu bootstrapMenu,  Dictionary<MvPatternType,
+            BootstrapMenuButton> bootstrapButtons, CubeModelMVC cubeModelMvc, ResourceLoader resourceLoader)
         {
+            _uiContainer = uiContainer;
             _bootstrapMenu = bootstrapMenu;
             
-            _mvcControllerSetup = mvcControllerSetup;
-            
             _buttons = bootstrapButtons;
+            _cubeModelMvc = cubeModelMvc;
+            _resourceLoader = resourceLoader;
 
             var initButtonsResult = InitializeButtons();
 
@@ -33,6 +45,43 @@ namespace Utilities
             {
                 Debug.LogWarning(initButtonsResult.Message);
             }
+        }
+
+        public void Show()
+        {
+            _bootstrapMenu.gameObject.SetActive(true);
+        }
+
+        private void Hide()
+        {
+            _bootstrapMenu.gameObject.SetActive(false);
+        }
+        
+        private void ShowMvcExample()
+        {
+            _controllerView ??= _resourceLoader.LoadPrefab<ControllerView>(_uiContainer);
+            
+            if (_controllerView == null)
+            {
+                Debug.LogError("ControllerView is null");
+                
+                return;
+            }
+            
+            _cubeControllerMvc ??= new CubeControllerMVC(new (_controllerView, _cubeModelMvc), this);
+            _cubeControllerMvc.ShowView();
+            
+            Hide();
+        }
+        
+        private void ShowMvpExample()
+        {
+            
+        }
+        
+        private void ShowMvvmExample()
+        {
+            
         }
         
         private OperationResult InitializeButtons()
@@ -59,33 +108,6 @@ namespace Utilities
             showMvvmButton.Initialize("Show MVVM", ShowMvvmExample);
             
             return OperationResult.Success();
-        }
-
-        public void Show()
-        {
-            _bootstrapMenu.SetActive(true);
-        }
-
-        public void Hide()
-        {
-            _bootstrapMenu.SetActive(false);
-        }
-        
-        private void ShowMvcExample()
-        {
-            _cubeControllerMvc = new CubeControllerMVC(_mvcControllerSetup , this);
-            
-            Hide();
-        }
-        
-        private void ShowMvpExample()
-        {
-            
-        }
-        
-        private void ShowMvvmExample()
-        {
-            
         }
     }
 }

@@ -11,26 +11,28 @@ namespace DI
 {
     public class BootstrapInstaller : MonoInstaller
     {
-        [SerializeField, Space] private GameObject _bootstrapMenu;
+        [SerializeField, Space] private BootstrapMenu _bootstrapMenu;
+        [SerializeField, Space] private RectTransform _uiContainer;
         
-        [SerializeField, Space] private MvcControllerSetup _mvcControllerSetup;
-        
-        [SerializeField, Space] private BootstrapMenuButton _mvcExampleButton;
-        [SerializeField] private BootstrapMenuButton _mvpExampleButton;
-        [SerializeField] private BootstrapMenuButton _mvvmExampleButton;
+        [SerializeField, Space] private CubeModelMVC _cubeModelMvc;
         
         public override void InstallBindings()
         {
             var buttonsDictionary = new Dictionary<MvPatternType, BootstrapMenuButton>
             {
-                { MvPatternType.Mvc, _mvcExampleButton },
-                { MvPatternType.Mvp, _mvpExampleButton },
-                { MvPatternType.Mvvm, _mvvmExampleButton },
+                { MvPatternType.Mvc, _bootstrapMenu.MvcExampleButton },
+                { MvPatternType.Mvp, _bootstrapMenu.MvpExampleButton },
+                { MvPatternType.Mvvm, _bootstrapMenu.MvvmExampleButton },
             };
+
+            var loader = Container.Resolve<ResourceLoader>();
             
-            var cubeController = new Bootstrap(_bootstrapMenu, buttonsDictionary, _mvcControllerSetup);
-            
-            Container.BindInterfacesAndSelfTo<Bootstrap>().FromInstance(cubeController);
+            var bootstrap = new Bootstrap(_uiContainer, _bootstrapMenu, buttonsDictionary, _cubeModelMvc, loader);
+
+            Container.BindInterfacesAndSelfTo<Bootstrap>()
+                .FromNew()
+                .AsSingle()
+                .WithArguments(_uiContainer, _bootstrapMenu, buttonsDictionary, _cubeModelMvc);
         }
     }
 }

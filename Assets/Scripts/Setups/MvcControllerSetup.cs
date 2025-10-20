@@ -5,11 +5,16 @@ using UnityEngine;
 
 namespace Setups
 {
-    [Serializable]
     public class MvcControllerSetup
     {
-        [field: SerializeField, Space] public ControllerViewMVC ControllerViewMvc { get; private set; }
+        public ControllerView ControllerView { get; private set; }
         
-        [field: SerializeField, Space] public CubeModelMVC CubeModel { get; private set; }
+        public CubeModelMVC CubeModel { get; private set; }
+        
+        public MvcControllerSetup(ControllerView controllerView, CubeModelMVC cubeModel)
+        {
+            ControllerView = controllerView;
+            CubeModel = cubeModel;
+        }
     }
 }
