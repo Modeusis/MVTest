@@ -17,7 +17,6 @@ namespace Base
         {
             ControllerView.gameObject.SetActive(false);
             
-            
             Bootstrap.Show();
         }
     }

@@ -8,6 +8,8 @@ namespace Models
     [Serializable]
     public class CubeModelMVC :  BaseCubeModel
     {
+        public bool IsRotating { get; private set; }
+        
         public Tween StartRotating(Action callback = null) 
         {
             IsRotating = true;

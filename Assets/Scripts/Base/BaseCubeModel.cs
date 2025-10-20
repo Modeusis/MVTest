@@ -6,8 +6,6 @@ namespace Base
     [Serializable]
     public class BaseCubeModel
     {
-        public bool IsRotating { get; protected set; }
-        
         [field: SerializeField, Space] public Transform CubeTransform { get; protected set; }
         
         [field: SerializeField, Range(1, 10), Space] public float RotationDuration { get; protected set; }

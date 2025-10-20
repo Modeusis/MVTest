@@ -26,6 +26,10 @@ namespace Models
 
         private void SetupEventHandlers()
         {
+            _disposables?.Dispose();
+
+            _disposables = new CompositeDisposable();
+            
             ControllerView.BackButton
                 .OnClickAsObservable()
                 .Subscribe(_ => HideView())
@@ -33,12 +37,12 @@ namespace Models
             
             ControllerView.RotateButton.Button
                 .OnClickAsObservable()
-                .Subscribe(_ => RotateCube())
+                .Subscribe(_ => _cubeModel.RotateCube())
                 .AddTo(_disposables);
             
             ControllerView.StopButton.Button
                 .OnClickAsObservable()
-                .Subscribe(_ => StopRotateCube())
+                .Subscribe(_ => _cubeModel.StopRotate())
                 .AddTo(_disposables);
             
             SubscribeToModelChanges();
@@ -46,17 +50,26 @@ namespace Models
 
         private void SubscribeToModelChanges()
         {
-            
+            _cubeModel.IsRotating
+                .Subscribe(rotating =>
+                {
+                    ControllerView.UpdateButtons(rotating);
+                })
+                .AddTo(_disposables);
         }
         
-        private void RotateCube()
+        public override void ShowView() 
         {
+            SetupEventHandlers();
             
+            base.ShowView();
         }
-
-        private void StopRotateCube()
+        
+        protected override void HideView()
         {
+            _disposables?.Dispose();   
             
+            base.HideView();
         }
     }
 }

@@ -22,21 +22,27 @@ namespace Utilities
         private readonly Dictionary<MvPatternType, BootstrapMenuButton> _buttons;
         
         private readonly CubeModelMVC _cubeModelMvc;
-        private readonly CubeModelMVVM _cubeModelMvp;
-        private readonly CubeModelMVP _cubeModelMvvm;
+        private readonly CubeModelMVP _cubeModelMvp;
+        private readonly CubeModelMVVM _cubeModelMvvm;
         
         private ControllerView _controllerView;
         
         private CubeControllerMVC _cubeControllerMvc;
+        private CubeControllerMVP _cubeControllerMvp;
+        private CubeControllerMVVM _cubeControllerMvvm;
         
         public Bootstrap(Transform uiContainer, BootstrapMenu bootstrapMenu,  Dictionary<MvPatternType,
-            BootstrapMenuButton> bootstrapButtons, CubeModelMVC cubeModelMvc, ResourceLoader resourceLoader)
+            BootstrapMenuButton> bootstrapButtons, CubeModelMVC cubeModelMvc, CubeModelMVVM cubeModelMvvm,
+            ResourceLoader resourceLoader)
         {
             _uiContainer = uiContainer;
             _bootstrapMenu = bootstrapMenu;
             
             _buttons = bootstrapButtons;
+            
             _cubeModelMvc = cubeModelMvc;
+            _cubeModelMvvm = cubeModelMvvm;
+            
             _resourceLoader = resourceLoader;
 
             var initButtonsResult = InitializeButtons();
@@ -67,8 +73,9 @@ namespace Utilities
                 
                 return;
             }
-            
-            _cubeControllerMvc ??= new CubeControllerMVC(new (_controllerView, _cubeModelMvc), this);
+
+            _cubeControllerMvc ??= 
+                new CubeControllerMVC(new MvcControllerSetup(_controllerView, _cubeModelMvc), this);
             _cubeControllerMvc.ShowView();
             
             Hide();
@@ -81,7 +88,20 @@ namespace Utilities
         
         private void ShowMvvmExample()
         {
+            _controllerView ??= _resourceLoader.LoadPrefab<ControllerView>(_uiContainer);
             
+            if (_controllerView == null)
+            {
+                Debug.LogError("ControllerView is null");
+                
+                return;
+            }
+
+            _cubeControllerMvvm ??=
+                new CubeControllerMVVM(new MvvmControllerSetup(_controllerView, _cubeModelMvvm), this);
+            _cubeControllerMvvm.ShowView();
+            
+            Hide();
         }
         
         private OperationResult InitializeButtons()
