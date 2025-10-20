@@ -8,27 +8,47 @@ namespace Models
     [Serializable]
     public class CubeModelMVC :  BaseCubeModel
     {
-        public bool IsRotating { get; private set; }
+        private Tween _rotatingTween;
         
-        public Tween StartRotating(Action callback = null) 
+        private bool _isRotating;
+        public bool IsRotating
+        {
+            get => _isRotating;
+            set
+            {
+                if (_isRotating == value)
+                {
+                    return;
+                }
+                
+                _isRotating = value;
+                
+                OnRotatingStateChanged?.Invoke(value);
+            }
+        }
+        
+        public Action<bool> OnRotatingStateChanged { get; set; }
+        
+        public void StartRotating() 
         {
             IsRotating = true;
             
             var currentRotation = CubeTransform.eulerAngles;
             var destination = currentRotation + RotationValue;
 
-            return CubeTransform.DORotate(destination, RotationDuration, RotateMode.FastBeyond360)
+            _rotatingTween = CubeTransform.DORotate(destination, RotationDuration, RotateMode.FastBeyond360)
                 .OnComplete(() =>
                 {
                     IsRotating = false;
-                    
-                    callback?.Invoke();
                 });
         }
 
         public void StopRotating()
         {
             IsRotating = false;
+            
+            _rotatingTween?.Kill();
+            _rotatingTween = null;
         }
     }
 }

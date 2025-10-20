@@ -15,7 +15,8 @@ namespace DI
         [SerializeField, Space] private RectTransform _uiContainer;
         
         [SerializeField, Space] private CubeModelMVC _cubeModelMvc;
-        [SerializeField, Space] private CubeModelMVVM _cubeModelMvvm;
+        [SerializeField] private CubeModelMVP _cubeModelMvp;
+        [SerializeField] private CubeModelMVVM _cubeModelMvvm;
         
         public override void InstallBindings()
         {
@@ -29,12 +30,11 @@ namespace DI
             var loader = Container.Resolve<ResourceLoader>();
 
             var bootstrap = new Bootstrap(_uiContainer, _bootstrapMenu, buttonsDictionary, _cubeModelMvc,
-                _cubeModelMvvm, loader);
+                _cubeModelMvp, _cubeModelMvvm, loader);
 
             Container.BindInterfacesAndSelfTo<Bootstrap>()
-                .FromNew()
-                .AsSingle()
-                .WithArguments(_uiContainer, _bootstrapMenu, buttonsDictionary, _cubeModelMvc);
+                .FromInstance(bootstrap)
+                .AsSingle();
         }
     }
 }

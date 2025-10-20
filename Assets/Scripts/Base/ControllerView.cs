@@ -1,4 +1,5 @@
 using System;
+using Models;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,9 @@ namespace UI
         [field: SerializeField, Space] public UiButton RotateButton { get; private set; }
         [field: SerializeField] public UiButton StopButton { get; private set; }
         
-        public void OnDisable()
+        private CubeModelMVC _cubeModelMVC;
+        
+        protected virtual void OnDisable()
         {
             BackButton.onClick.RemoveAllListeners();
             

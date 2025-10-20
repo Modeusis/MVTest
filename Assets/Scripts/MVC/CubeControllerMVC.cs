@@ -10,8 +10,6 @@ namespace Models
     {
         private readonly CubeModelMVC _cubeModel;
         
-        private Tween _rotatingTween;
-        
         public CubeControllerMVC(MvcControllerSetup controllerSetup, Bootstrap bootstrap)
         {
             Bootstrap = bootstrap;
@@ -28,27 +26,17 @@ namespace Models
                 return;
             }
             
-            _rotatingTween = _cubeModel.StartRotating(() =>
-            {
-                ControllerView.UpdateButtons(false);
-            });
-            
-            ControllerView.UpdateButtons(true);
+            _cubeModel.StartRotating();
         }
 
         private void StopRotating()
         {
-            if (!_cubeModel.IsRotating || _rotatingTween == null)
+            if (!_cubeModel.IsRotating)
             {
                 return;
             }
             
             _cubeModel.StopRotating();
-            
-            _rotatingTween?.Kill();
-            _rotatingTween = null;
-            
-            ControllerView.UpdateButtons(false);
         }
 
         public override void ShowView()

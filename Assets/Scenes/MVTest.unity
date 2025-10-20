@@ -365,9 +365,13 @@ MonoBehaviour:
     <CubeTransform>k__BackingField: {fileID: 587300538}
     <RotationDuration>k__BackingField: 5
     <RotationValue>k__BackingField: {x: 30, y: 270, z: 0}
+  _cubeModelMvp:
+    <CubeTransform>k__BackingField: {fileID: 587300538}
+    <RotationDuration>k__BackingField: 3
+    <RotationValue>k__BackingField: {x: 0, y: 0, z: 180}
   _cubeModelMvvm:
     <CubeTransform>k__BackingField: {fileID: 587300538}
-    <RotationDuration>k__BackingField: 6.63
+    <RotationDuration>k__BackingField: 6
     <RotationValue>k__BackingField: {x: 20, y: 100, z: 0}
 --- !u!1 &330585543
 GameObject:
